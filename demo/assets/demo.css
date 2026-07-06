@@ -1,0 +1,71 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later
+   Demo-only chrome for bugbot.bugmunch.dev. Loaded after the panel's own inline
+   styles, so it reuses the same design tokens (--accent, --panel, --border, …)
+   and follows light/dark automatically. */
+
+.demo-ribbon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 8px 16px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text);
+    background: var(--panel-alt, var(--panel));
+    border-bottom: 1px solid var(--border);
+}
+
+.demo-ribbon__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+    flex: none;
+}
+
+.demo-ribbon__text { color: var(--muted); }
+.demo-ribbon__text strong { color: var(--text); }
+
+.demo-ribbon__cta {
+    margin-left: auto;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.demo-ribbon__cta:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+    .demo-ribbon__cta { margin-left: 0; }
+}
+
+/* The "nothing is saved" toast raised by any form submit in the demo. */
+.demo-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translate(-50%, 16px);
+    max-width: min(92vw, 460px);
+    padding: 11px 16px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius, 6px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 1000;
+}
+
+.demo-toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.demo-toast strong { color: var(--accent); }

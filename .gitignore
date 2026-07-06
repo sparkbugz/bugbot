@@ -7,3 +7,4 @@ data/bot.db-shm
 certs/
 node_modules/
 npm-debug.log*
+demo/dist/

@@ -27,6 +27,7 @@
         "start:panel": "node src/panelMain.js",
         "start:bot:keychain": "DISCORD_TOKEN=\"$(llm-secret get discord-bugbot/DISCORD_TOKEN)\" DISCORD_OAUTH_CLIENT_SECRET=\"$(llm-secret get discord-bugbot/DISCORD_OAUTH_CLIENT_SECRET)\" node src/index.js",
         "start:panel:keychain": "DISCORD_TOKEN=\"$(llm-secret get discord-bugbot/DISCORD_TOKEN)\" DISCORD_OAUTH_CLIENT_SECRET=\"$(llm-secret get discord-bugbot/DISCORD_OAUTH_CLIENT_SECRET)\" node src/panelMain.js",
+        "build:demo": "node demo/build.mjs",
         "test": "node --test"
     },
     "overrides": {
@@ -35,5 +36,8 @@
     "dependencies": {
         "discord.js": "^14.21.0",
         "dotenv": "^16.6.1"
+    },
+    "devDependencies": {
+        "wrangler": "4.107.0"
     }
 }
