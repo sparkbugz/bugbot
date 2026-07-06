@@ -4,6 +4,27 @@ BugBot is a self-hosted Discord support bot. It watches only the channels you al
 
 It is designed for community servers where support answers, moderation actions, and admin-tuned settings need to survive restarts. Durable state is stored in local SQLite through Node's built-in `node:sqlite` — there is no external database to run.
 
+## Live demo
+
+See the whole admin console without installing anything: **[bugbot.bugmunch.dev](https://bugbot.bugmunch.dev)**. It's a click-around preview with sample data — sign-in is skipped and nothing you do there is saved.
+
+[![BugBot admin dashboard](docs/screenshots/dashboard.png)](https://bugbot.bugmunch.dev)
+
+<table>
+  <tr>
+    <td width="50%"><a href="https://bugbot.bugmunch.dev/settings"><img src="docs/screenshots/settings.png" alt="Settings, grouped by module with live/restart notes"></a><br><sub>Settings — one section per module, applied live</sub></td>
+    <td width="50%"><a href="https://bugbot.bugmunch.dev/moderation"><img src="docs/screenshots/moderation.png" alt="Moderation log with reasons and one-click undo"></a><br><sub>Moderation log — reasons, and one-click undo</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="https://bugbot.bugmunch.dev/analytics"><img src="docs/screenshots/analytics.png" alt="Analytics with per-day activity charts"></a><br><sub>Analytics — per-day activity and top lists</sub></td>
+    <td width="50%"><a href="https://bugbot.bugmunch.dev/faq/edit"><img src="docs/screenshots/faq-editor.png" alt="FAQ entry editor"></a><br><sub>FAQ editor — triggers, answer, GitHub lookup</sub></td>
+  </tr>
+</table>
+
+The console follows your system light/dark preference, with a manual override:
+
+![BugBot dashboard in dark mode](docs/screenshots/dashboard-dark.png)
+
 ## Requirements
 
 - Node.js 22.5 or newer. Node 24 LTS is recommended.
