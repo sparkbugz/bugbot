@@ -1,0 +1,59 @@
+{
+    "blockedDomains": [
+        "discord-nitro.example",
+        "wallet-drainer.example",
+        "airdrop-claim.example"
+    ],
+    "blockedDomainAction": "ban",
+    "lookalikeDomainAction": "ban",
+    "walletScamAction": "ban",
+    "riskyTldAction": "timeout",
+    "mentionSpamAction": "timeout",
+    "maxMentions": 8,
+    "rules": [
+        {
+            "id": "wallet-drainer-copy",
+            "action": "ban",
+            "deleteMessage": true,
+            "reason": "wallet drainer copy-paste scam",
+            "match": {
+                "requireUrl": true,
+                "anyPhrases": [
+                    "connect your wallet to claim",
+                    "verify your wallet to receive",
+                    "enter your seed phrase",
+                    "validate your wallet"
+                ]
+            }
+        },
+        {
+            "id": "fake-nitro-giveaway",
+            "action": "ban",
+            "deleteMessage": true,
+            "reason": "fake Nitro giveaway link",
+            "match": {
+                "requireUrl": true,
+                "anyPhrases": [
+                    "free nitro",
+                    "nitro giveaway",
+                    "claim nitro"
+                ]
+            }
+        },
+        {
+            "id": "emergency-token-presale",
+            "action": "timeout",
+            "timeoutSeconds": 86400,
+            "deleteMessage": true,
+            "reason": "token presale or airdrop spam",
+            "match": {
+                "requireUrl": true,
+                "anyPhrases": [
+                    "presale is live",
+                    "airdrop is live",
+                    "claim your allocation"
+                ]
+            }
+        }
+    ]
+}

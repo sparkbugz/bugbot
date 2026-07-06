@@ -1,0 +1,9 @@
+.env
+data/faq.json
+data/moderation.json
+data/bot.db
+data/bot.db-wal
+data/bot.db-shm
+certs/
+node_modules/
+npm-debug.log*

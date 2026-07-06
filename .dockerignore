@@ -1,0 +1,19 @@
+# Keep the build context small and never leak secrets/state into the image.
+# The Dockerfile COPYs only src/, data/, public/ — everything else here is
+# excluded from the context so builds (local and CI) stay fast.
+.git
+.github
+node_modules
+npm-debug.log*
+tests
+scripts
+docs
+*.md
+
+# Secrets and runtime state — never bake these in.
+.env
+certs
+data/faq.json
+data/bot.db
+data/bot.db-wal
+data/bot.db-shm

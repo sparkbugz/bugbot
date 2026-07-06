@@ -1,0 +1,39 @@
+{
+    "name": "discord-bugbot",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Deployable Discord bot for FAQ auto-replies and GitHub issue/PR linking.",
+    "license": "AGPL-3.0-or-later",
+    "author": "SparkBugz",
+    "homepage": "https://github.com/sparkbugz/bugbot#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sparkbugz/bugbot.git"
+    },
+    "bugs": {
+        "url": "https://github.com/sparkbugz/bugbot/issues"
+    },
+    "type": "module",
+    "engines": {
+        "node": ">=22.5"
+    },
+    "scripts": {
+        "setup": "node scripts/setup.mjs",
+        "check:system": "node scripts/check-system.mjs",
+        "check:config": "node scripts/check-config.js",
+        "access": "node scripts/access.mjs",
+        "start": "node src/index.js",
+        "start:bot": "node src/index.js",
+        "start:panel": "node src/panelMain.js",
+        "start:bot:keychain": "DISCORD_TOKEN=\"$(llm-secret get discord-bugbot/DISCORD_TOKEN)\" DISCORD_OAUTH_CLIENT_SECRET=\"$(llm-secret get discord-bugbot/DISCORD_OAUTH_CLIENT_SECRET)\" node src/index.js",
+        "start:panel:keychain": "DISCORD_TOKEN=\"$(llm-secret get discord-bugbot/DISCORD_TOKEN)\" DISCORD_OAUTH_CLIENT_SECRET=\"$(llm-secret get discord-bugbot/DISCORD_OAUTH_CLIENT_SECRET)\" node src/panelMain.js",
+        "test": "node --test"
+    },
+    "overrides": {
+        "undici": "6.27.0"
+    },
+    "dependencies": {
+        "discord.js": "^14.21.0",
+        "dotenv": "^16.6.1"
+    }
+}

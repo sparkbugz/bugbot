@@ -1,0 +1,74 @@
+# Two independent services that share one SQLite store on a named volume.
+# Stopping (or crashing, or restarting) either one leaves the other running:
+# `docker compose stop bot` takes the bot offline while the panel stays up and
+# reachable, and you can switch the bot back on from the panel.
+#
+# Both services run the same published image (ghcr.io/sparkbugz/bugbot); each
+# can be brought up on its own. To run a locally-built image instead, uncomment
+# `build: .` on either service and `docker compose build`.
+#
+# The panel must be reachable from outside its container, so it binds 0.0.0.0 —
+# which the app requires to be served over HTTPS. Point ADMIN_WEB_* in .env at
+# your certs (mounted below) or front the panel with a TLS-terminating proxy.
+#
+# Pin a specific release by setting BUGBOT_TAG in .env (e.g. BUGBOT_TAG=v0.1.0);
+# defaults to :latest, which the watchtower service auto-updates (see bottom).
+
+services:
+  bot:
+    image: ghcr.io/sparkbugz/bugbot:${BUGBOT_TAG:-latest}
+    # build: .
+    command: ["node", "src/index.js"]
+    env_file: [.env]
+    volumes:
+      - bugbot-data:/app/data
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  panel:
+    image: ghcr.io/sparkbugz/bugbot:${BUGBOT_TAG:-latest}
+    # build: .
+    command: ["node", "src/panelMain.js"]
+    env_file: [.env]
+    environment:
+      - ADMIN_WEB_HOST=0.0.0.0
+    ports:
+      - "${ADMIN_WEB_PORT:-8787}:${ADMIN_WEB_PORT:-8787}"
+    volumes:
+      - bugbot-data:/app/data
+      - ./certs:/app/certs:ro
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    healthcheck:
+      # Protocol-aware: hits the panel over http or https per ADMIN_WEB_PROTOCOL,
+      # ignoring a self-signed cert. Any response < 500 (including the login
+      # redirect) counts as healthy. Uses Node's built-ins — no curl/wget needed.
+      test:
+        - CMD
+        - node
+        - -e
+        - |
+          const proto = process.env.ADMIN_WEB_PROTOCOL === 'https' ? 'https' : 'http';
+          const port = process.env.ADMIN_WEB_PORT || 8787;
+          require(proto).get({host:'127.0.0.1',port,path:'/',rejectUnauthorized:false,timeout:4000},
+            r => process.exit(r.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1));
+      interval: 30s
+      timeout: 6s
+      retries: 3
+      start_period: 15s
+
+  # Auto-update: polls GHCR every 5 min and redeploys bot/panel when a newer
+  # image is published for the running tag (:latest by default). Only touches
+  # containers labelled above. Remove this service if you deploy updates another
+  # way. Auto-update only works against the pulled GHCR image, not a local build.
+  watchtower:
+    image: containrrr/watchtower
+    command: --label-enable --cleanup --interval 300
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+volumes:
+  bugbot-data:

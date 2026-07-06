@@ -1,0 +1,45 @@
+{
+    "entries": [
+        {
+            "id": "install-dependencies",
+            "questions": [
+                "How do I install dependencies?",
+                "Why did npm install fail?",
+                "Why did composer install fail?"
+            ],
+            "answer": "Start with a clean dependency install and verify the project runtime versions match the repo requirements.",
+            "response": {
+                "links": [
+                    "https://github.com/owner/repo/issues/123"
+                ]
+            }
+        },
+        {
+            "id": "known-login-bug",
+            "question": "Why can I not log in because of an OAuth callback error?",
+            "answer": "This is a known issue. Track the linked ticket for status updates.",
+            "github": {
+                "mode": "fixed",
+                "url": "https://github.com/owner/repo/issues/456"
+            }
+        },
+        {
+            "id": "stuck-build-search",
+            "questions": [
+                "Why is the build stuck?",
+                "Why is CI failing?",
+                "Why is the pipeline red?"
+            ],
+            "answer": "Closest related GitHub thread:",
+            "cooldownSeconds": 900,
+            "github": {
+                "mode": "search",
+                "repos": [
+                    "owner/repo"
+                ],
+                "type": "both",
+                "minScore": 0.63
+            }
+        }
+    ]
+}
