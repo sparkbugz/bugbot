@@ -3,21 +3,32 @@
   //
   // This is an assets-only Worker: no server code, just the static files that
   // `npm run build:demo` writes to demo/dist. Everything the deploy needs lives
-  // in this repo, so Cloudflare builds and publishes straight from GitHub with
-  // nothing to configure by hand.
+  // in this repo, so Cloudflare builds and publishes straight from GitHub.
+  //
+  // The "build" hook below runs the site generator as part of `wrangler deploy`,
+  // so a single deploy command builds demo/dist and then publishes it — no
+  // separate build step to configure or keep in sync.
   //
   // Wire it up once (Cloudflare dashboard → Workers & Pages → Create → Connect
   // to Git → sparkbugz/bugbot):
-  //   Build command:   npm run build:demo
+  //   Root directory:  /            (repo root — NOT /demo; the build needs the
+  //                                  root package.json and node_modules)
+  //   Build command:   (leave empty — the "build" hook here handles it)
   //   Deploy command:  npx wrangler deploy
-  // After that, every push to main rebuilds and republishes automatically.
+  // After this, every push to main rebuilds and republishes automatically.
+  //
+  // The Worker name must match the one in the dashboard, or Cloudflare flags a
+  // mismatch on each build.
   //
   // Clean URLs work out of the box: Workers Assets serves /faq from faq.html,
   // /moderation/rules from moderation/rules.html, and so on — which is exactly
   // the layout the build writes, so the panel's own links resolve unchanged.
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "bugbot-demo",
+  "name": "bugbot",
   "compatibility_date": "2025-06-01",
+  "build": {
+    "command": "npm run build:demo"
+  },
   "assets": {
     "directory": "./demo/dist"
   },
